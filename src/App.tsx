@@ -21,24 +21,30 @@ interface Post {
 }
 
 const App: React.FC = () => {
+  
+  const API_URL = 'https://final-api-nkm9.onrender.com'; // backend URL
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [likedPosts, setLikedPosts] = useState<number[]>(() => {
     const stored = localStorage.getItem('likedPosts');
     return stored ? JSON.parse(stored) : [];
   });
 
+  // Fetch posts from the backend API
   useEffect(() => {
-    fetch('http://localhost:8080/posts')
+    fetch(`${API_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data));
-  }, []);
+  }, [API_URL]);
 
+  // Store liked posts in localStorage
   useEffect(() => {
     localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
   }, [likedPosts]);
 
+  // Handle creating a new post
   const handleCreatePost = (newPost: { author: string; content: string; mediaUrl: string }) => {
-    fetch('http://localhost:8080/posts', {
+    fetch(`${API_URL}/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPost),
@@ -47,13 +53,15 @@ const App: React.FC = () => {
       .then((data) => setPosts((prev) => [...prev, data]));
   };
 
+  // Handle deleting a post
   const handleDeletePost = (id: number) => {
-    fetch(`http://localhost:8080/posts/${id}`, { method: 'DELETE' })
+    fetch(`${API_URL}/posts/${id}`, { method: 'DELETE' })
       .then(() => setPosts((prev) => prev.filter((post) => post.id !== id)));
   };
 
+  // Handle editing a post
   const handleEditPost = (id: number, updatedPost: { author: string; content: string; mediaUrl: string }) => {
-    fetch(`http://localhost:8080/posts/${id}`, {
+    fetch(`${API_URL}/posts/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedPost),
@@ -66,6 +74,7 @@ const App: React.FC = () => {
       );
   };
 
+  // Handle liking a post
   const handleLikePost = (id: number) => {
     if (likedPosts.includes(id)) {
       // Unlike: remove from likedPosts and decrease like count
@@ -89,6 +98,7 @@ const App: React.FC = () => {
     // Optionally notify backend here
   };
 
+  // Handle commenting on a post
   const handleCommentPost = (id: number, comment: string) => {
     setPosts((prev) =>
       prev.map((post) =>
@@ -97,13 +107,13 @@ const App: React.FC = () => {
               ...post,
               comments: [
                 ...(post.comments || []),
-                { id: Date.now(), text: comment, author: "USER" },
+                { id: Date.now(), text: comment, author: 'USER' },
               ],
             }
           : post
       )
     );
-    // Optionally, send to backend
+    // Optionally, send comment to backend here
   };
 
   return (
