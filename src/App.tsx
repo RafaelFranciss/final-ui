@@ -20,6 +20,9 @@ interface Post {
   comments?: Comment[];
 }
 
+// ✅ Use environment variable or fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
 const App: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [likedPosts, setLikedPosts] = useState<number[]>(() => {
@@ -28,7 +31,7 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8080/posts')
+    fetch(`${API_BASE_URL}/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, []);
@@ -38,7 +41,7 @@ const App: React.FC = () => {
   }, [likedPosts]);
 
   const handleCreatePost = (newPost: { author: string; content: string; mediaUrl: string }) => {
-    fetch('http://localhost:8080/posts', {
+    fetch(`${API_BASE_URL}/posts`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newPost),
@@ -48,12 +51,12 @@ const App: React.FC = () => {
   };
 
   const handleDeletePost = (id: number) => {
-    fetch(`http://localhost:8080/posts/${id}`, { method: 'DELETE' })
+    fetch(`${API_BASE_URL}/posts/${id}`, { method: 'DELETE' })
       .then(() => setPosts((prev) => prev.filter((post) => post.id !== id)));
   };
 
   const handleEditPost = (id: number, updatedPost: { author: string; content: string; mediaUrl: string }) => {
-    fetch(`http://localhost:8080/posts/${id}`, {
+    fetch(`${API_BASE_URL}/posts/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedPost),
@@ -68,7 +71,6 @@ const App: React.FC = () => {
 
   const handleLikePost = (id: number) => {
     if (likedPosts.includes(id)) {
-      // Unlike: remove from likedPosts and decrease like count
       setPosts((prev) =>
         prev.map((post) =>
           post.id === id
@@ -78,7 +80,6 @@ const App: React.FC = () => {
       );
       setLikedPosts((prev) => prev.filter((postId) => postId !== id));
     } else {
-      // Like: add to likedPosts and increase like count
       setPosts((prev) =>
         prev.map((post) =>
           post.id === id ? { ...post, likes: (post.likes ?? 0) + 1 } : post
@@ -86,7 +87,7 @@ const App: React.FC = () => {
       );
       setLikedPosts((prev) => [...prev, id]);
     }
-    // Optionally notify backend here
+    // Optionally notify backend
   };
 
   const handleCommentPost = (id: number, comment: string) => {
@@ -97,13 +98,13 @@ const App: React.FC = () => {
               ...post,
               comments: [
                 ...(post.comments || []),
-                { id: Date.now(), text: comment, author: "USER" },
+                { id: Date.now(), text: comment, author: 'USER' },
               ],
             }
           : post
       )
     );
-    // Optionally, send to backend
+    // Optionally send to backend
   };
 
   return (
