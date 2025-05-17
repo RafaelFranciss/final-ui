@@ -10,22 +10,14 @@ interface PostProps {
   onDelete: () => void;
 }
 
-// Helper to generate a color or image based on author (for demo, static avatar)
-const getProfilePic = (author: string) => {
-  // You can replace this with a real image URL or use a service like UI Avatars
-  // Example with UI Avatars: `https://ui-avatars.com/api/?name=${encodeURIComponent(author)}`
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(author)}&background=random&size=64`;
-};
-
 const Post: React.FC<PostProps> = ({ author, content, mediaUrl, createdAt, onEdit, onDelete }) => {
   return (
     <div className="post" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16, borderBottom: '1px solid #eee' }}>
       {/* Profile Picture */}
       <img
-        src={getProfilePic(author)}
-        alt={`${author} avatar`}
-        className="post-profile-pic"
-        style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+        src="/default-avatar.png" // <-- Replace with your default or user profile image path
+        alt="profile"
+        style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 10, objectFit: 'cover' }}
       />
       {/* Post Content */}
       <div style={{ flex: 1 }}>
