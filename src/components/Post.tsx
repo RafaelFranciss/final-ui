@@ -6,8 +6,6 @@ interface PostProps {
   content: string;
   mediaUrl: string;
   createdAt: string;
-  // Optional: if you want to use a custom profile image per post
-  profileImageUrl?: string;
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -19,39 +17,45 @@ const Post: React.FC<PostProps> = ({
   createdAt,
   onEdit,
   onDelete,
-  profileImageUrl, // This is optional
 }) => {
- 
-  const avatar =
-    profileImageUrl && profileImageUrl.trim().length > 0
-      ? profileImageUrl
-      : "https://www.pngmart.com/files/23/Profile-PNG-Photo.png"; 
+  
+  const profileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png"; 
 
   return (
-    <div className="post">
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
-        <img
-          src={avatar}
-          alt="profile"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            marginRight: 10,
-            objectFit: 'cover'
-          }}
-        />
-        <h3 style={{ margin: 0 }}>{author}</h3>
+    <div className="post" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16, borderBottom: '1px solid #eee' }}>
+      <img
+        src={profileImg}
+        alt="profile"
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          objectFit: 'cover',
+          marginRight: 10,
+        }}
+      />
+      <div style={{ flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h3 style={{ margin: 0 }}>{author}</h3>
+          <span style={{ color: '#999', fontSize: 13 }}>{new Date(createdAt).toLocaleString()}</span>
+        </div>
+        <p style={{ margin: '7px 0 10px 0' }}>{content}</p>
+        {mediaUrl && (
+          <img
+            src={mediaUrl}
+            alt="Media"
+            style={{ maxWidth: '100%', borderRadius: 12, marginBottom: 8 }}
+          />
+        )}
+        <div>
+          <button className="edit-button" onClick={onEdit}>
+            Edit
+          </button>
+          <button className="delete-button" onClick={onDelete}>
+            Delete
+          </button>
+        </div>
       </div>
-      <p>{content}</p>
-      {mediaUrl && <img src={mediaUrl} alt="Media" />}
-      <span>{new Date(createdAt).toLocaleString()}</span>
-      <button className="edit-button" onClick={onEdit}>
-        Edit
-      </button>
-      <button className="delete-button" onClick={onDelete}>
-        Delete
-      </button>
     </div>
   );
 };
