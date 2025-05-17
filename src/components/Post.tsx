@@ -15,7 +15,7 @@ const Post: React.FC<PostProps> = ({ author, content, mediaUrl, createdAt, onEdi
     <div className="post" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16, borderBottom: '1px solid #eee' }}>
       {/* Profile Picture */}
       <img
-        src="/default-avatar.png" // <-- Replace with your default or user profile image path
+        src="https://tableconvert.com/images/avatar.png" // <-- Replace with your default or user profile image path
         alt="profile"
         style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 10, objectFit: 'cover' }}
       />
