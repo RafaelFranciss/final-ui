@@ -104,6 +104,9 @@ const PostList: React.FC<PostListProps> = ({
     }
   };
 
+  
+  const profileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
+
   return (
     <div className="post-list">
       {posts.map((post) =>
@@ -150,7 +153,21 @@ const PostList: React.FC<PostListProps> = ({
           </form>
         ) : (
           <div key={post.id} className="post-card">
-            <h3>{post.author}</h3>
+            {/* Profile picture and author name row */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+              <img
+                src={profileImg}
+                alt="profile"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  marginRight: 10,
+                  objectFit: 'cover'
+                }}
+              />
+              <h3 style={{ margin: 0 }}>{post.author}</h3>
+            </div>
             <p>{post.content}</p>
             {post.mediaUrl && <img src={post.mediaUrl} alt="Post media" />}
             <p>{new Date(post.createdAt).toLocaleString()}</p>
