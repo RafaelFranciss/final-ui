@@ -33,6 +33,9 @@ const GalleryIcon = () => (
   />
 );
 
+const profileImg = "https://i.imgur.com/q3K4bYJ.png";
+const commentProfileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
+
 const PostList: React.FC<PostListProps> = ({
   posts,
   onDelete,
@@ -103,9 +106,6 @@ const PostList: React.FC<PostListProps> = ({
       setCommentInputs((prev) => ({ ...prev, [postId]: '' }));
     }
   };
-
-  
-  const profileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
 
   return (
     <div className="post-list">
@@ -198,8 +198,21 @@ const PostList: React.FC<PostListProps> = ({
               </form>
               <div className="comments-list">
                 {post.comments && post.comments.map((comment) => (
-                  <div key={comment.id} className="comment-item">
-                    <strong>{comment.author}:</strong> {comment.text}
+                  <div key={comment.id} className="comment-item" style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
+                    <img
+                      src={commentProfileImg}
+                      alt="profile"
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: '50%',
+                        marginRight: 8,
+                        objectFit: 'cover'
+                      }}
+                    />
+                    <div>
+                      <strong>{comment.author}:</strong> {comment.text}
+                    </div>
                   </div>
                 ))}
               </div>
