@@ -17,7 +17,7 @@ interface PostProps {
   onDelete: () => void;
 }
 
-const profileImg = "https://i.imgur.com/q3K4bYJ.png";
+const profileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
 const commentProfileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
 
 const Post: React.FC<PostProps> = ({
