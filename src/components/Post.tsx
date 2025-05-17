@@ -1,28 +1,37 @@
 import React from 'react';
 
+interface Comment {
+  id: number;
+  text: string;
+  author: string;
+}
+
 interface PostProps {
   id: number;
   author: string;
   content: string;
   mediaUrl: string;
   createdAt: string;
+  comments?: Comment[];
   onEdit: () => void;
   onDelete: () => void;
 }
+
+const profileImg = "https://i.imgur.com/q3K4bYJ.png";
+const commentProfileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png";
 
 const Post: React.FC<PostProps> = ({
   author,
   content,
   mediaUrl,
   createdAt,
+  comments,
   onEdit,
   onDelete,
 }) => {
-  
-  const profileImg = "https://www.pngmart.com/files/23/Profile-PNG-HD.png"; 
-
   return (
     <div className="post" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16, borderBottom: '1px solid #eee' }}>
+      {/* Post profile pic and author */}
       <img
         src={profileImg}
         alt="profile"
@@ -55,6 +64,29 @@ const Post: React.FC<PostProps> = ({
             Delete
           </button>
         </div>
+        {/* Comments with profile pic */}
+        {comments && comments.length > 0 && (
+          <div className="comments-list" style={{ marginTop: 16 }}>
+            {comments.map((comment) => (
+              <div key={comment.id} className="comment-item" style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
+                <img
+                  src={commentProfileImg}
+                  alt="profile"
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: '50%',
+                    marginRight: 8,
+                    objectFit: 'cover'
+                  }}
+                />
+                <div>
+                  <strong>{comment.author}:</strong> {comment.text}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
