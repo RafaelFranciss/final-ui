@@ -6,19 +6,33 @@ interface PostProps {
   content: string;
   mediaUrl: string;
   createdAt: string;
+  profileImageUrl?: string; // Add this if you want to use a custom image link per post
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const Post: React.FC<PostProps> = ({ author, content, mediaUrl, createdAt, onEdit, onDelete }) => {
+const Post: React.FC<PostProps> = ({
+  author,
+  content,
+  mediaUrl,
+  createdAt,
+  onEdit,
+  onDelete,
+  profileImageUrl, // Use this if provided
+}) => {
   return (
     <div className="post" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16, borderBottom: '1px solid #eee' }}>
-      {/* Profile Picture */}
+      {/* Profile Picture using image link or fallback */}
       <img
-        src="https://tableconvert.com/images/avatar.png" // <-- Replace with your default or user profile image path
+        src={
+          profileImageUrl && profileImageUrl.trim()
+            ? profileImageUrl
+            : "https://tableconvert.com/images/avatar.png" 
+        }
         alt="profile"
         style={{ width: 40, height: 40, borderRadius: '50%', marginRight: 10, objectFit: 'cover' }}
       />
+
       {/* Post Content */}
       <div style={{ flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
