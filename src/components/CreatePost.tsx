@@ -32,6 +32,12 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreate }) => {
     }
   };
 
+  // When the user types or pastes a link, set the mediaPreview as well
+  const handleMediaUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMediaUrl(e.target.value);
+    setMediaPreview(e.target.value ? e.target.value : null);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onCreate({ author, content, mediaUrl });
@@ -67,6 +73,13 @@ const CreatePost: React.FC<CreatePostProps> = ({ onCreate }) => {
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={handleFileChange}
+        />
+        <input
+          type="text"
+          placeholder="Or paste image link here"
+          value={mediaUrl}
+          onChange={handleMediaUrlChange}
+          style={{ marginLeft: 10, flex: 1 }}
         />
         {mediaPreview && (
           <img src={mediaPreview} alt="Preview" className="media-preview" />
