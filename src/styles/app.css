@@ -191,6 +191,15 @@ body {
   box-shadow: 0 0 2px #bbb;
 }
 
+.post-profile-pic {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eee;
+  margin-right: 12px;
+}
+
 .profile-name {
   font-weight: bold;
   color: #333;
